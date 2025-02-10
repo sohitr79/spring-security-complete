@@ -23,17 +23,12 @@ public class SpringSecurity {
 //    private EmployeeDetailsService userDetailsService;
 
     private final EmployeeDetailsService employeeDetailsService;
-
     @Autowired  // Use constructor injection
     public SpringSecurity(EmployeeDetailsService employeeDetailsService) {
         this.employeeDetailsService = employeeDetailsService;
     }
-
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-
-
         return http.authorizeHttpRequests(request -> request
                         .requestMatchers("/public/**").permitAll()
                         .requestMatchers("/bank/employee/**").authenticated()
@@ -44,7 +39,7 @@ public class SpringSecurity {
                 .build();
     }
 
-      // we have removed this since we were getting circular dependency issue because of this.
+    // we have removed this since we were getting circular dependency issue because of this.
 //    @Autowired
 //    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 //        auth.userDetailsService(employeeDetailsService).passwordEncoder(passwordEncoder());
@@ -55,10 +50,8 @@ public class SpringSecurity {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 }

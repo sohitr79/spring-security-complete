@@ -10,9 +10,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
-import java.util.Collections;
-
 @Component
 public class EmployeeDetailsService implements UserDetailsService {
 
