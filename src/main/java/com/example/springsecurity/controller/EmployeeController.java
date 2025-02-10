@@ -19,37 +19,36 @@ public class EmployeeController {
     @Autowired
     EmployeeService employeeService;
 
-    @PostMapping("/save")
-    public ResponseEntity<Employee> addEmployee(@RequestBody Employee employee) {
+    // Will add this endpoint when we do role based auth
+//    @GetMapping("/all")
+//    public ResponseEntity<List<Employee>> getAllEmployee() {
+//        List<Employee> EmployeeList = employeeService.getAllEmployee();
+//        return ResponseEntity.ok(EmployeeList);
+//    }
 
-       Employee createdEmployee = employeeService.addEmployee(employee);
-       URI uri = ServletUriComponentsBuilder
-               .fromCurrentRequest()
-               .path("/{id}")
-               .buildAndExpand(createdEmployee.getId())
-               .toUri();
-        return ResponseEntity.created(uri).body(createdEmployee);
-    }
+    //Employee should be able to access his info
+//    @GetMapping("/get/{id}")
+//    public ResponseEntity<Employee> getEmployeeById(@PathVariable long id) {
+//
+//        Employee Employee = employeeService.getEmployeeById(id);
+//        return ResponseEntity.ok(Employee);
+//    }
 
-    @GetMapping("/all")
-    public ResponseEntity<List<Employee>> getAllEmployee() {
-        List<Employee> EmployeeList = employeeService.getAllEmployee();
-        return ResponseEntity.ok(EmployeeList);
-    }
+    @GetMapping("/get/{name}")
+    public ResponseEntity<Employee> getEmployeeByName(@PathVariable String name) {
 
-    @GetMapping("/get/{id}")
-    public ResponseEntity<Employee> getEmployeeById(@PathVariable long id) {
-
-        Employee Employee = employeeService.getEmployeeById(id);
+        Employee Employee = employeeService.getByName(name);
         return ResponseEntity.ok(Employee);
     }
 
+    //Employee should be able to delete his info
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Employee> deleteEmployeeById(@PathVariable long id) {
         Employee deletedEmployee = employeeService.deleteEmployeeById(id);
         return ResponseEntity.accepted().body(deletedEmployee);
     }
 
+    //Employee should be able to update his info
     @PutMapping("/update")
     public ResponseEntity<Void> updateEmployee(@RequestBody Employee Employee) {
         employeeService.addEmployee(Employee);

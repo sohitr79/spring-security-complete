@@ -27,7 +27,11 @@ public class Employee {
     @Column(name = "mobile")
     private Integer mobile;
 
+    @Column(name = "password")
+    private String password;
+
     @ManyToOne
     @JoinColumn(name = "department_id", referencedColumnName = "departmentId")
     private Department department;
+
 }
