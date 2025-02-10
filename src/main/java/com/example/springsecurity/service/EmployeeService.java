@@ -1,5 +1,6 @@
 package com.example.springsecurity.service;
 
+import com.example.springsecurity.config.SpringSecurity;
 import com.example.springsecurity.custom.exception.BusinessException;
 import com.example.springsecurity.custom.exception.EmptyInputException;
 import com.example.springsecurity.custom.exception.EmptyListException;
@@ -8,6 +9,8 @@ import com.example.springsecurity.entity.Employee;
 import com.example.springsecurity.entity.MetaInfo;
 import com.example.springsecurity.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +24,9 @@ public class EmployeeService implements EmployeeServiceInterface {
     @Autowired
     DepartmentService departmentService;
 
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
     @Transactional
     public Employee addEmployee(Employee employee) {
         validateEmployee(employee);
@@ -29,6 +35,7 @@ public class EmployeeService implements EmployeeServiceInterface {
 
         departmentService.saveDepartmentWithTransaction(employee.getDepartment());
 
+        employee.setPassword(passwordEncoder.encode(employee.getPassword()));
 
         Employee createdEmployee = employeeRepository.save(employee);
 
@@ -70,5 +77,10 @@ public class EmployeeService implements EmployeeServiceInterface {
         if (employeeRepository.findByMobile(employee.getMobile()).isPresent()) {
             throw new BusinessException("408","Already registered Mobile Number");
         }
+    }
+
+    public Employee getByName(String name) {
+        Employee employee=employeeRepository.findByName(name).orElse(null);
+        return employee;
     }
 }
